@@ -6,266 +6,349 @@
   <title>🔍 Quest Room: Comparatives</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+      font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       padding: 20px;
-      color: #2c3e50;
+      color: #ecf1ff;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(122, 177, 255, 0.35), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(255, 129, 198, 0.28), transparent 35%),
+        radial-gradient(circle at 20% 80%, rgba(104, 255, 184, 0.25), transparent 35%),
+        linear-gradient(135deg, #121a35, #1b2150 45%, #32245e);
+      overflow-x: hidden;
     }
+
     .container {
       width: 100%;
-      max-width: 600px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 760px;
+      border-radius: 28px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+      box-shadow: 0 22px 50px rgba(8, 10, 30, 0.55);
       overflow: hidden;
-      margin: 20px 0;
+      position: relative;
+    }
+
+    .screen {
+      padding: 34px;
+      min-height: 500px;
       text-align: center;
     }
-    .screen {
-      padding: 30px;
-      min-height: 400px;
-    }
+
     h1 {
-      font-size: 32px;
-      color: #2980b9;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: #ffffff;
+      text-shadow: 0 0 18px rgba(120, 170, 255, 0.8);
     }
+
     .subtitle {
-      color: #7f8c8d;
-      font-size: 18px;
-      margin-bottom: 25px;
+      color: #d9e2ff;
+      font-size: 1.1rem;
       line-height: 1.5;
+      margin-bottom: 22px;
     }
+
     .room {
-      background: #f8f9fa;
-      border-radius: 15px;
-      height: 200px;
+      height: 240px;
+      border-radius: 22px;
+      margin: 22px 0;
       position: relative;
-      margin: 25px 0;
+      border: 1px solid rgba(255,255,255,0.2);
+      background:
+        linear-gradient(180deg, #5b68b8 0%, #40559f 45%, #26396e 45%, #1f2f63 100%);
       overflow: hidden;
+      box-shadow: inset 0 -25px 40px rgba(0, 0, 0, 0.25);
     }
+
+    .room::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.03) 0,
+        rgba(255, 255, 255, 0.03) 42px,
+        transparent 42px,
+        transparent 84px
+      );
+      pointer-events: none;
+    }
+
     .object {
       position: absolute;
-      font-size: 40px;
-      transition: all 0.3s;
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.25));
+      user-select: none;
     }
-    .chair { top: 20px; left: 10%; }
-    .table { top: 50px; left: 0%; }
-    .book { top: 100px; left: 60%; }
-    .door { 
-      position: absolute; 
-      right: 10%; 
-      top: 30px;
-      font-size: 50px;
-      transition: transform 0.8s;
+
+    .lamp { top: 14px; left: 47%; font-size: 45px; animation: pulse 2.6s infinite; }
+    .chair { bottom: 40px; left: 13%; font-size: 54px; }
+    .table { bottom: 25px; left: 31%; font-size: 78px; }
+    .book { bottom: 74px; left: 60%; font-size: 42px; transform: rotate(-8deg); }
+    .cat { bottom: 24px; left: 72%; font-size: 52px; }
+    .window { top: 45px; left: 7%; font-size: 52px; }
+
+    .door {
+      right: 8%;
+      top: 52px;
+      font-size: 98px;
+      transform-origin: left center;
+      transition: transform 0.9s ease;
     }
-    .door.open { transform: rotateY(180deg); }
+
+    .door.open { transform: rotateY(-68deg); }
+
+    .key {
+      position: absolute;
+      right: 18%;
+      top: 88px;
+      font-size: 34px;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: all .5s ease;
+      filter: drop-shadow(0 0 9px rgba(255, 225, 106, 0.8));
+    }
+
+    .key.visible {
+      opacity: 1;
+      transform: translateY(0);
+      animation: bob 1.4s ease-in-out infinite;
+    }
+
     .question {
-      font-size: 22px;
-      margin: 25px 0;
-      line-height: 1.4;
-      color: #2c3e50;
+      font-size: 1.35rem;
+      margin: 15px 0;
+      color: #ffffff;
+      min-height: 65px;
+      line-height: 1.45;
     }
+
     .options {
-      display: flex;
-      flex-direction: column;
+      display: grid;
       gap: 12px;
-      margin: 25px 0;
+      margin: 15px 0;
     }
+
     .option {
-      padding: 15px;
-      font-size: 18px;
-      border: 3px solid #3498db;
-      border-radius: 10px;
-      background: #e3f2fd;
+      padding: 13px 14px;
+      border: 2px solid rgba(160, 214, 255, 0.85);
+      border-radius: 12px;
+      color: #e9f4ff;
+      background: rgba(33, 58, 128, 0.72);
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
       text-align: left;
-    }
-    .option:hover {
-      transform: scale(1.03);
-      background: #bbdefb;
-      border-color: #1e88e5;
-    }
-    .option.correct {
-      background: #e8f5e9;
-      border-color: #4caf50;
-    }
-    .option.incorrect {
-      background: #ffebee;
-      border-color: #f44336;
-    }
-    .hint {
-      background: #fff9c4;
-      border-left: 4px solid #ffd54f;
-      padding: 15px;
-      margin: 20px 0;
-      border-radius: 8px;
-      display: none;
-    }
-    .btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 20px;
-      border-radius: 10px;
-      cursor: pointer;
       width: 100%;
-      margin-top: 20px;
-      font-weight: bold;
-      transition: all 0.3s;
     }
-    .btn:hover {
-      background: #2980b9;
+
+    .option:hover {
       transform: translateY(-2px);
+      border-color: #9fe7ff;
+      background: rgba(49, 77, 156, 0.9);
     }
-    .hidden {
+
+    .option.correct {
+      border-color: #72f6b5;
+      background: rgba(44, 136, 98, 0.75);
+    }
+
+    .option.incorrect {
+      border-color: #ff8ea4;
+      background: rgba(152, 50, 80, 0.75);
+    }
+
+    .hint {
+      background: rgba(255, 243, 187, 0.95);
+      border-left: 4px solid #ffc947;
+      border-radius: 10px;
+      color: #55370d;
+      text-align: left;
+      margin-top: 14px;
+      padding: 12px;
       display: none;
     }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 5px;
+      margin-bottom: 6px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: .9rem;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+    }
+
     .progress {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
+      gap: 9px;
+      margin: 10px 0 14px;
+      flex-wrap: wrap;
     }
+
     .progress-step {
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: #bdc3c7;
+      background: rgba(255,255,255,0.25);
+      transition: all .25s ease;
     }
-    .progress-step.active {
-      background: #3498db;
-      transform: scale(1.3);
+
+    .progress-step.active { background: #71f4ff; transform: scale(1.22); }
+    .progress-step.correct { background: #8cffb5; }
+
+    .btn {
+      width: 100%;
+      border: none;
+      margin-top: 18px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: #152151;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      cursor: pointer;
+      transition: transform .2s ease, filter .2s ease;
     }
-    .progress-step.correct {
-      background: #27ae60;
-    }
-    .win-screen {
+
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.04); }
+
+    input[type="text"] {
+      width: 86%;
+      max-width: 360px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.25);
+      background: rgba(10, 24, 70, 0.65);
+      color: #fff;
+      padding: 12px;
+      font-size: 1rem;
       text-align: center;
+      outline: none;
     }
+
+    input[type="text"]::placeholder { color: rgba(230, 242, 255, 0.7); }
+    .hidden { display: none; }
+
+    .certificate {
+      margin: 20px 0;
+      padding: 25px;
+      border-radius: 18px;
+      border: 2px solid rgba(255,235,133,0.75);
+      background: linear-gradient(140deg, rgba(255, 248, 213, 0.95), rgba(245, 227, 168, 0.9));
+      color: #5e4916;
+      font-size: 1.95rem;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(24, 13, 2, 0.25);
+    }
+
+    .certificate-name {
+      color: #ffffff;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      font-size: 1.15rem;
+    }
+
     .confetti {
       position: fixed;
       width: 10px;
       height: 10px;
       pointer-events: none;
+      z-index: 999;
     }
-    .certificate {
-      background: linear-gradient(135deg, #f8f4e6, #e6e1c9);
-      color: #8b7355;
-      padding: 30px;
-      border-radius: 20px;
-      margin: 25px 0;
-      font-size: 32px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      border: 3px solid #d4af37;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    @keyframes fall {
+      0% { transform: translateY(-110px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
-    .certificate-name {
-      font-size: 24px;
-      color: #2c3e50;
-      margin-top: 10px;
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Start Screen -->
     <div id="startScreen" class="screen">
       <h1>🔍 Quest Room: Comparatives</h1>
       <p class="subtitle">
-        Help Lila and Max escape the room!<br>
-        Answer 3 questions about comparatives.<br>
-        Find the key to open the door!
+        Help Lila and Max escape the room.<br>
+        Solve 5 comparative adjective tasks to find the key.
       </p>
-      
+
       <div class="room">
+        <div class="object lamp">💡</div>
+        <div class="object window">🪟</div>
         <div class="object chair">🪑</div>
-        <div class="object table">🪑</div>
-        <div class="object book">📚</div>
+        <div class="object table">🛋️</div>
+        <div class="object book">📘</div>
+        <div class="object cat">🐈</div>
         <div class="object door">🚪</div>
       </div>
-      
-      <p style="color: #e74c3c; font-weight: bold; margin: 20px 0;">
-        🌟 <strong>Tip:</strong> Use "bigger", "more beautiful", "smaller"...
+
+      <p class="subtitle" style="margin-bottom: 14px;">
+        Tip: short adjectives → <strong>-er</strong> (smaller), longer adjectives → <strong>more</strong> (more interesting).
       </p>
-      
-      <input type="text" id="playerName" placeholder="Your name" style="padding: 12px; width: 80%; max-width: 300px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; text-align: center; margin: 10px 0;">
-      <button class="btn" onclick="startGame()">Start Quest! ➡️</button>
+
+      <input type="text" id="playerName" placeholder="Type your name">
+      <button class="btn" onclick="startGame()">Start Quest ➡️</button>
     </div>
 
-    <!-- Game Screen -->
     <div id="gameScreen" class="screen hidden">
-      <h1>🔍 Quest Room</h1>
-      <p class="subtitle">Help Lila and Max find the key!</p>
-      
+      <h1>🗝️ Find the Key</h1>
+      <p class="subtitle">Choose the best comparative answer in each sentence.</p>
+
       <div class="room">
+        <div class="object lamp">💡</div>
+        <div class="object window">🪟</div>
         <div class="object chair">🪑</div>
-        <div class="object table">🪑</div>
-        <div class="object book">📚</div>
+        <div class="object table">🛋️</div>
+        <div class="object book">📘</div>
+        <div class="object cat">🐈</div>
         <div class="object door" id="door">🚪</div>
+        <div class="object key" id="key">🔑</div>
       </div>
-      
-      <div class="progress" id="progressBar">
-        <div class="progress-step active"></div>
-        <div class="progress-step"></div>
-        <div class="progress-step"></div>
+
+      <div class="meta-row">
+        <div class="chip" id="questionCounter">Question 1 / 5</div>
+        <div class="chip" id="scoreCounter">Score: 0</div>
       </div>
-      
-      <div class="question" id="questionText">Which is bigger: the chair or the table?</div>
-      
-      <div class="options">
-        <div class="option" onclick="checkAnswer(0)">The chair</div>
-        <div class="option" onclick="checkAnswer(1)">The table</div>
-      </div>
-      
-      <div class="hint" id="hintText">
-        Remember: "bigger" = больше по размеру. The table is bigger than the chair!
-      </div>
-      
-      <div class="question" id="questionText2" style="display: none;">
-        Which is more beautiful: the book or the chair?
-      </div>
-      <div class="options" id="options2" style="display: none;">
-        <div class="option" onclick="checkAnswer(2)">The book</div>
-        <div class="option" onclick="checkAnswer(3)">The chair</div>
-      </div>
-      
-      <div class="question" id="questionText3" style="display: none;">
-        Which is smaller: the book or the table?
-      </div>
-      <div class="options" id="options3" style="display: none;">
-        <div class="option" onclick="checkAnswer(4)">The book</div>
-        <div class="option" onclick="checkAnswer(5)">The table</div>
-      </div>
-      
-      <button class="btn" onclick="resetGame()" style="display: none;" id="restartBtn">Try Again</button>
+
+      <div class="progress" id="progressBar"></div>
+      <div class="question" id="questionText"></div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="hint" id="hintText"></div>
     </div>
 
-    <!-- Win Screen -->
-    <div id="winScreen" class="screen hidden win-screen">
+    <div id="winScreen" class="screen hidden">
       <h1>🎉 Escape Successful!</h1>
-      <p class="subtitle">You helped Lila and Max escape the room!</p>
-      
-      <div style="font-size: 80px; margin: 20px 0;">👧👦 ➡️ 🚪</div>
-      
-      <div class="certificate" id="certificate">
-        COMPARATIVE MASTER
-      </div>
+      <p class="subtitle">Excellent! You completed every comparative challenge.</p>
+      <div style="font-size:72px; margin: 8px 0 16px;">👧👦 ➡️ 🚪✨</div>
+
+      <div class="certificate">COMPARATIVE MASTER</div>
       <div class="certificate-name" id="winnerName"></div>
-      
-      <p style="color: #27ae60; font-size: 22px; margin: 25px 0;">
-        Great job! You used comparatives correctly.
-      </p>
-      
+      <p class="subtitle" id="finalScore"></p>
       <button class="btn" onclick="resetGame()">Play Again</button>
     </div>
   </div>
@@ -274,25 +357,58 @@
     let playerName = '';
     let currentQuestion = 0;
     let correctAnswers = 0;
-    
-    // 3 questions with answers
+
     const questions = [
-      { 
-        text: "Which is bigger: the chair or the table?", 
-        options: ["The chair", "The table"],
-        correct: 1
+      {
+        text: 'Which sentence is correct?',
+        options: [
+          'The table is bigger than the chair.',
+          'The table is more big than the chair.'
+        ],
+        correct: 0,
+        hint: 'For short adjectives like "big", use "-er": bigger.'
       },
-      { 
-        text: "Which is more beautiful: the book or the chair?", 
-        options: ["The book", "The chair"],
-        correct: 0
+      {
+        text: 'Choose the correct comparative sentence.',
+        options: [
+          'This book is beautifuller than that one.',
+          'This book is more beautiful than that one.'
+        ],
+        correct: 1,
+        hint: 'For long adjectives like "beautiful", use "more + adjective".'
       },
-      { 
-        text: "Which is smaller: the book or the table?", 
-        options: ["The book", "The table"],
-        correct: 0
+      {
+        text: 'Complete the sentence: "A cat is ___ than an elephant."',
+        options: ['smaller', 'more small'],
+        correct: 0,
+        hint: 'Short adjective "small" → "smaller".'
+      },
+      {
+        text: 'Choose the best answer: "Math is ___ for me than music."',
+        options: ['difficulter', 'more difficult'],
+        correct: 1,
+        hint: 'Use "more difficult", not "difficulter".'
+      },
+      {
+        text: 'Pick the correct sentence.',
+        options: [
+          'My backpack is heavier than yours.',
+          'My backpack is more heavy than yours.'
+        ],
+        correct: 0,
+        hint: 'For adjective ending with consonant + y: heavy → heavier.'
       }
     ];
+
+    function createProgress() {
+      const progressBar = document.getElementById('progressBar');
+      progressBar.innerHTML = '';
+      questions.forEach(() => {
+        const dot = document.createElement('div');
+        dot.className = 'progress-step';
+        progressBar.appendChild(dot);
+      });
+    }
 
     function startGame() {
       playerName = document.getElementById('playerName').value.trim();
@@ -300,73 +416,86 @@
         alert('Please enter your name to start the quest!');
         return;
       }
-      
+
       document.getElementById('startScreen').classList.add('hidden');
       document.getElementById('gameScreen').classList.remove('hidden');
+      createProgress();
       loadQuestion();
     }
 
     function loadQuestion() {
-      if (currentQuestion >= questions.length) {
-        showWinScreen();
-        return;
-      }
-      
       const q = questions[currentQuestion];
-      
-      // Update progress bar
+      const questionCounter = document.getElementById('questionCounter');
+      const scoreCounter = document.getElementById('scoreCounter');
+      const questionText = document.getElementById('questionText');
+      const optionsContainer = document.getElementById('optionsContainer');
+      const hintText = document.getElementById('hintText');
+      const key = document.getElementById('key');
+
+      questionCounter.textContent = `Question ${currentQuestion + 1} / ${questions.length}`;
+      scoreCounter.textContent = `Score: ${correctAnswers}`;
+      questionText.textContent = q.text;
+      optionsContainer.innerHTML = '';
+      hintText.style.display = 'none';
+      hintText.textContent = q.hint;
+
+      q.options.forEach((optionText, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = optionText;
+        btn.type = 'button';
+        btn.onclick = () => checkAnswer(index);
+        optionsContainer.appendChild(btn);
+      });
+
       const steps = document.querySelectorAll('.progress-step');
       steps.forEach((step, index) => {
         step.className = 'progress-step';
         if (index < currentQuestion) step.classList.add('correct');
         if (index === currentQuestion) step.classList.add('active');
       });
-      
-      // Show current question
-      document.getElementById('questionText').textContent = q.text;
-      document.getElementById('questionText2').style.display = 'none';
-      document.getElementById('questionText3').style.display = 'none';
-      document.getElementById('options2').style.display = 'none';
-      document.getElementById('options3').style.display = 'none';
-      
-      // Show correct options
-      const options = document.querySelectorAll('.option');
-      options[0].textContent = q.options[0];
-      options[1].textContent = q.options[1];
-      options[0].className = 'option';
-      options[1].className = 'option';
-      
-      // Hide hint
-      document.getElementById('hintText').style.display = 'none';
+
+      if (currentQuestion >= 3) {
+        key.classList.add('visible');
+      }
     }
 
     function checkAnswer(selectedIndex) {
       const q = questions[currentQuestion];
       const options = document.querySelectorAll('.option');
-      
-      // Reset options
-      options.forEach(opt => {
-        opt.className = 'option';
-      });
-      
-      // Check answer
+      options.forEach((o) => (o.disabled = true));
+
       if (selectedIndex === q.correct) {
         options[selectedIndex].classList.add('correct');
-        correctAnswers++;
-        
-        // Open the door animation
-        if (currentQuestion === 0) {
+        correctAnswers += 1;
+
+        if (correctAnswers === questions.length) {
           document.getElementById('door').classList.add('open');
         }
-        
-        // Move to next question after 1 second
+
         setTimeout(() => {
-          currentQuestion++;
-          loadQuestion();
-        }, 1000);
+          currentQuestion += 1;
+          if (currentQuestion >= questions.length) {
+            showWinScreen();
+          } else {
+            loadQuestion();
+          }
+        }, 700);
       } else {
         options[selectedIndex].classList.add('incorrect');
-        document.getElementById('hintText').style.display = 'block';
+        options[q.correct].classList.add('correct');
+
+        const hintText = document.getElementById('hintText');
+        hintText.style.display = 'block';
+
+        setTimeout(() => {
+          currentQuestion += 1;
+          if (currentQuestion >= questions.length) {
+            showWinScreen();
+          } else {
+            loadQuestion();
+          }
+        }, 1200);
       }
     }
 
@@ -374,61 +503,41 @@
       document.getElementById('gameScreen').classList.add('hidden');
       document.getElementById('winScreen').classList.remove('hidden');
       document.getElementById('winnerName').textContent = playerName.toUpperCase();
-      
+      document.getElementById('finalScore').textContent = `Final score: ${correctAnswers} / ${questions.length}`;
       createConfetti();
     }
 
     function createConfetti() {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 90; i += 1) {
         const confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.top = `${Math.random() * 100}%`;
-        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-        confetti.style.width = `${Math.random() * 10 + 5}px`;
-        confetti.style.height = `${Math.random() * 10 + 5}px`;
-        confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.top = '-30px';
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 85%, 63%)`;
+        confetti.style.width = `${Math.random() * 10 + 6}px`;
+        confetti.style.height = `${Math.random() * 10 + 6}px`;
+        confetti.style.animation = `fall ${Math.random() * 2 + 2.5}s linear forwards`;
         document.body.appendChild(confetti);
-        
-        // Remove after animation
-        setTimeout(() => {
-          confetti.remove();
-        }, 5000);
+
+        setTimeout(() => confetti.remove(), 5000);
       }
-      
-      // Add keyframes
-      const style = document.createElement('style');
-      style.innerHTML = `
-        @keyframes fall {
-          0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(1000px) rotate(720deg); opacity: 0; }
-        }
-      `;
-      document.head.appendChild(style);
     }
 
     function resetGame() {
       currentQuestion = 0;
       correctAnswers = 0;
+      document.getElementById('playerName').value = '';
       document.getElementById('door').classList.remove('open');
-      
-      // Reset UI
+      document.getElementById('key').classList.remove('visible');
+
       document.getElementById('startScreen').classList.remove('hidden');
       document.getElementById('gameScreen').classList.add('hidden');
       document.getElementById('winScreen').classList.add('hidden');
-      
-      // Reset options
-      document.querySelectorAll('.option').forEach(opt => {
-        opt.className = 'option';
-      });
-      
-      document.getElementById('hintText').style.display = 'none';
     }
-    
-    // Allow Enter key to submit answer
+
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('playerName').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
+      document.getElementById('playerName').addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
           startGame();
         }
       });
